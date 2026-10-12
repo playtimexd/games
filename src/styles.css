@@ -20,19 +20,19 @@
 }
 
 /*
- * Dark only, on purpose: the whole site is a tactical screen. One accent (ice cyan)
- * on ink, and the 3D map uses the same single hue.
+ * Dark only, on purpose: it is a game room at night. One accent (tangerine) on a deep
+ * plum-black. The warm lamp and the cool TV glow live in the 3D room, not in the UI.
  */
 :root {
   color-scheme: dark;
-  --bg: #05080b;
-  --surface: #0a1117;
-  --surface-2: #111c25;
-  --line: rgb(140 205 230 / 0.17);
-  --fg: #e8f3f8;
-  --muted: #8fa6b3;
-  --accent: #4fd8ff;
-  --accent-ink: #04141a;
+  --bg: #0c0910;
+  --surface: #151019;
+  --surface-2: #211a2b;
+  --line: rgb(255 226 205 / 0.15);
+  --fg: #f6eee8;
+  --muted: #ab9fae;
+  --accent: #ff7a45;
+  --accent-ink: #1c0d06;
 }
 
 html {

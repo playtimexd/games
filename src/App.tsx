@@ -2,7 +2,7 @@ import { useEffect } from 'react'
 import { MotionConfig } from 'motion/react'
 import { parseRoute, useHash } from './lib/route'
 import { Nav } from './components/Nav'
-import { Command } from './components/Command'
+import { Den } from './components/Den'
 import { Work } from './components/Work'
 import { About } from './components/About'
 import { Achievements } from './components/Achievements'
@@ -55,7 +55,7 @@ export default function App() {
         <ProjectPage slug={route.slug} />
       ) : (
         <main>
-          <Command />
+          <Den />
           <Work />
           <About />
           <Achievements />

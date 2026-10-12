@@ -1,13 +1,13 @@
 # Portfolio
 
-A two-layer portfolio for games, apps, tools and agents, built as a strategy-game command screen.
+A two-layer portfolio for games, apps, tools and agents, built as a 3D game room you can play.
 
-- Layer 1: home. A 3D campaign map: one base per project standing in a hex canyon, on a
-  supply line that runs into unexplored fog. Below the map: all games (filterable),
-  how I work, achievements, contact.
+- Layer 1: home. A small game room at night with a cartridge shelf, a console and CRT TV,
+  and a pinball machine you can actually play. Below it: all games (filterable), how I work,
+  achievements, contact.
 - Layer 2: one page per project (play, store or repo panel, notes, 3D screens).
 
-Stack: Vite, React, TypeScript, Tailwind v4, Motion, Three.js (with bloom).
+Stack: Vite, React, TypeScript, Tailwind v4, Motion, Three.js (with bloom and shadows).
 
 ```bash
 npm install
@@ -51,26 +51,35 @@ launch: { type: 'link', url: 'https://...', label: 'View on itch.io' }
 `kind` is `game`, `app`, `tool` or `agent`. The home filters are built from whichever
 kinds exist, so a new kind of project adds its own chip.
 
-## The campaign map
+## The game room
 
-`src/lib/world.ts` is a framework-free Three.js scene and `src/lib/layout.ts` decides where
-each base stands (x is time, z is the lane for its kind). The HUD is plain React in
-`src/components/Command.tsx`.
+`src/lib/den.ts` builds the room and runs the cameras. `src/lib/pinball.ts` is the physics,
+pure 2D with no rendering, so it runs headless. The HUD is `src/components/Den.tsx`.
 
-- one base per project, built from the data. The tower shape says what it is: hex tower for
-  a game, block for an app, prism for a tool, core for an agent
-- a final "next game" base always sits at the edge of unexplored territory, so the map never
-  looks finished (copy lives in `site.nextGame`)
-- low cinematic camera with pointer parallax and a field-of-view punch when you select
-- drag to orbit, right-drag to pan, ctrl + wheel or the +/- buttons to zoom. The plain wheel
-  is left alone so the page still scrolls
-- click a base to select it, click it again (or press Q or Enter) to open the project
-- HUD: radar minimap, roster with number hotkeys, selection panel, command card
-  (Q open, W launch, E overview, A previous, S next), and gamepad (d-pad, A, B)
-- `Map 3D/2D` and `Sound` toggles in the nav. Sound is synthesized, no audio files
-- it drops bloom and dust by itself on a slow machine, and falls back to a 2D layout
+Three stations, with cinematic cuts between them (keys 1, 2, 3 or the tabs):
+
+- **Room**: the whole room. Click the pinball machine to play or the shelf to browse.
+- **Browse**: one cartridge per project on the shelf. Click one to select it, click it again
+  (or press Enter) and it flies into the console, the TV switches on and the project opens.
+- **Play**: the pinball table. Each project is a target with its cover on it. Hit it and the
+  project is selected, with its title on the backbox display and its art on the TV. Roll the
+  ball into the hole to open the selected project.
+
+Controls on the table: hold Space to charge and release to launch, Z and / (or the arrow keys)
+for the flippers, and on a phone the Left, Launch and Right buttons. A gamepad works too.
+
+How it scales:
+
+- a new project adds a cartridge and, up to 10, a pinball target. The last cartridge is always
+  an empty one for the next game (copy in `site.nextGame`)
+- the shelf grows by rows. Past 10 projects the table keeps the first 10 and Browse has all of them
+- `Map 3D/2D` and `Sound` toggles sit in the nav. Sound is synthesized, there are no audio files
+- it drops shadows and bloom by itself on a slow machine, and falls back to a 2D layout
   without WebGL or with reduced motion
-- the site is dark only on purpose: the whole thing is a tactical screen
+- the site is dark only on purpose: it is a game room at night
+
+In dev, `window.__DEN__` exposes `sim(seconds)` and `advance(seconds)` so physics and the open
+flow can be tested without animation frames. It is removed from production builds.
 
 Project pages with two or more `shots` use `src/lib/flow.ts`, a smaller 3D coverflow.
 

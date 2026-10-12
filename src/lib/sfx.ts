@@ -69,6 +69,14 @@ export const sfx = {
   boot() {
     beep(180, 0.5, 'sawtooth', 0.04, 720)
   },
+  flip: () => beep(150, 0.06, 'square', 0.05, 90),
+  bumper: () => beep(620, 0.09, 'triangle', 0.06, 1100),
+  ping() {
+    beep(1500, 0.05, 'square', 0.04)
+    beep(2000, 0.08, 'square', 0.035, undefined, 0.04)
+  },
+  drain: () => beep(320, 0.45, 'sawtooth', 0.05, 70),
+  launch: () => beep(220, 0.25, 'sawtooth', 0.05, 900),
 }
 
 export const useSfx = () =>
