@@ -1,10 +1,15 @@
 @import "tailwindcss";
 @import "@fontsource-variable/geist";
 @import "@fontsource-variable/geist-mono";
+@import "@fontsource/chakra-petch/500.css";
+@import "@fontsource/chakra-petch/600.css";
+@import "@fontsource/chakra-petch/700.css";
+@import "@fontsource/chakra-petch/700-italic.css";
 
 @theme inline {
   --font-sans: "Geist Variable", ui-sans-serif, system-ui, sans-serif;
   --font-mono: "Geist Mono Variable", ui-monospace, monospace;
+  --font-display: "Chakra Petch", "Geist Variable", ui-sans-serif, system-ui, sans-serif;
   --color-bg: var(--bg);
   --color-surface: var(--surface);
   --color-surface-2: var(--surface-2);
@@ -13,37 +18,27 @@
   --color-muted: var(--muted);
   --color-accent: var(--accent);
   --color-accent-ink: var(--accent-ink);
-  --color-accent-text: var(--accent-text);
 }
 
-/* One accent, one neutral family, two themes. */
+/*
+ * Dark only, on purpose: the site is a night-time arcade street and every
+ * surface is a lit screen. One UI accent (amber). The cyan and magenta you see
+ * belong to the 3D city, not to the interface.
+ */
 :root {
-  color-scheme: light;
-  --bg: #f4f4f6;
-  --surface: #fafafb;
-  --surface-2: #e9e9ed;
-  --line: rgb(18 18 22 / 0.12);
-  --fg: #121216;
-  --muted: #5a5a64;
-  --accent: #ff5b2e;
-  --accent-ink: #121216;
-  --accent-text: #c93509;
-}
-:root[data-theme="dark"] {
   color-scheme: dark;
-  --bg: #0c0c0f;
-  --surface: #141418;
-  --surface-2: #1d1d23;
-  --line: rgb(255 255 255 / 0.1);
-  --fg: #ededf1;
-  --muted: #9d9da8;
-  --accent: #ff5b2e;
-  --accent-ink: #0c0c0f;
-  --accent-text: #ff7a52;
+  --bg: #05060b;
+  --surface: #0b0e17;
+  --surface-2: #151a27;
+  --line: rgb(255 255 255 / 0.13);
+  --fg: #eef1f8;
+  --muted: #9aa4b8;
+  --accent: #ffab2e;
+  --accent-ink: #0b0b0e;
 }
 
 html {
-  scroll-behavior: smooth;
+  scroll-behavior: auto;
 }
 body {
   background: var(--bg);
@@ -57,19 +52,108 @@ body {
   color: var(--accent-ink);
 }
 :focus-visible {
-  outline: 2px solid var(--accent-text);
+  outline: 2px solid var(--accent);
   outline-offset: 3px;
-  border-radius: 6px;
 }
 
-/* Fades the WebGL stage into the page so planes never end on a hard edge. */
+/*
+ * Shape system: every surface has two cut corners (top-left, bottom-right).
+ * .cut clips one element; .frame is a 1px bordered cut panel with .frame-in inside.
+ */
+.cut {
+  --cut: 12px;
+  clip-path: polygon(
+    var(--cut) 0,
+    100% 0,
+    100% calc(100% - var(--cut)),
+    calc(100% - var(--cut)) 100%,
+    0 100%,
+    0 var(--cut)
+  );
+}
+.frame {
+  --cut: 14px;
+  --frame: var(--line);
+  background: var(--frame);
+  padding: 1px;
+  transition: background-color 0.25s;
+  clip-path: polygon(
+    var(--cut) 0,
+    100% 0,
+    100% calc(100% - var(--cut)),
+    calc(100% - var(--cut)) 100%,
+    0 100%,
+    0 var(--cut)
+  );
+}
+.frame-in {
+  --c: calc(var(--cut) - 0.42px);
+  background: var(--surface);
+  height: 100%;
+  overflow: hidden;
+  clip-path: polygon(
+    var(--c) 0,
+    100% 0,
+    100% calc(100% - var(--c)),
+    calc(100% - var(--c)) 100%,
+    0 100%,
+    0 var(--c)
+  );
+}
+.group:hover > .frame,
+.group:focus-visible > .frame,
+.frame[data-active="true"] {
+  --frame: var(--accent);
+}
+.glass .frame-in {
+  background: rgb(8 10 18 / 0.72);
+  backdrop-filter: blur(14px);
+}
+
+/* HUD micro-labels: display face, uppercase, widened. Chips and meta only. */
+.hud {
+  font-family: var(--font-display);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
+
+/* Fades the WebGL gallery into the page so planes never end on a hard edge. */
 .edge-fade {
   -webkit-mask-image: linear-gradient(to right, transparent, #000 9%, #000 91%, transparent);
   mask-image: linear-gradient(to right, transparent, #000 9%, #000 91%, transparent);
 }
 
+/* CRT lines for flat media, on a non-interactive overlay. */
+.crt::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: repeating-linear-gradient(
+    to bottom,
+    rgb(0 0 0 / 0.16) 0,
+    rgb(0 0 0 / 0.16) 1px,
+    transparent 1px,
+    transparent 3px
+  );
+}
+
+@keyframes prompt {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.3;
+  }
+}
+.prompt {
+  animation: prompt 1.3s ease-in-out infinite;
+}
+
 @media (prefers-reduced-motion: reduce) {
-  html {
-    scroll-behavior: auto;
+  .prompt {
+    animation: none;
   }
 }

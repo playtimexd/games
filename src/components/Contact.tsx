@@ -3,18 +3,18 @@ import { site } from '../data/site'
 
 export function Contact() {
   return (
-    <footer id="contact" className="scroll-mt-16 border-t border-line">
+    <footer id="contact" className="scroll-mt-4 border-t border-line">
       <div className="mx-auto max-w-7xl px-4 pb-10 pt-24 md:px-8">
         <a
           href={`mailto:${site.email}`}
-          className="group inline-flex flex-wrap items-center gap-x-4 text-3xl font-semibold tracking-tighter sm:text-5xl md:text-7xl"
+          className="group inline-flex flex-wrap items-center gap-x-4 font-display text-3xl font-bold uppercase italic tracking-tight sm:text-5xl md:text-7xl"
         >
-          <span className="break-all underline decoration-line decoration-2 underline-offset-[0.18em] transition-colors group-hover:decoration-accent">
+          <span className="break-all decoration-line decoration-4 underline-offset-[0.14em] transition-colors group-hover:text-accent group-hover:underline">
             {site.email}
           </span>
           <ArrowUpRight
             weight="bold"
-            className="size-[0.8em] shrink-0 text-accent-text transition-transform group-hover:-translate-y-1 group-hover:translate-x-1"
+            className="size-[0.8em] shrink-0 text-accent transition-transform group-hover:-translate-y-1 group-hover:translate-x-1"
           />
         </a>
 

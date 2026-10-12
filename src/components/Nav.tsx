@@ -1,6 +1,7 @@
-import { useEffect, useState } from 'react'
-import { Moon, Sun } from '@phosphor-icons/react'
+import { SpeakerHigh, SpeakerSlash, Cube } from '@phosphor-icons/react'
 import { site } from '../data/site'
+import { sfx, useSfx } from '../lib/sfx'
+import { set3d, supports3d, use3d } from '../lib/prefs'
 
 const links = [
   { href: '#work', label: 'Work' },
@@ -8,47 +9,49 @@ const links = [
   { href: '#contact', label: 'Contact' },
 ]
 
-function ThemeToggle() {
-  const [theme, setTheme] = useState(() => document.documentElement.dataset.theme ?? 'dark')
-  useEffect(() => {
-    document.documentElement.dataset.theme = theme
-    try {
-      localStorage.setItem('theme', theme)
-    } catch {
-      /* storage unavailable, theme just will not persist */
-    }
-  }, [theme])
-  const Icon = theme === 'dark' ? Sun : Moon
-  return (
-    <button
-      type="button"
-      onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
-      aria-label={`Switch to ${theme === 'dark' ? 'light' : 'dark'} theme`}
-      className="grid size-9 place-items-center rounded-full text-muted transition-colors hover:text-fg active:scale-[0.96]"
-    >
-      <Icon size={18} weight="regular" />
-    </button>
-  )
-}
+const toggle =
+  'cut hud inline-flex h-9 items-center gap-1.5 bg-surface-2/80 px-3 text-[11px] backdrop-blur transition hover:bg-accent hover:text-accent-ink aria-pressed:text-accent aria-pressed:hover:text-accent-ink'
 
-export function Nav() {
+export function Nav({ home }: { home: boolean }) {
+  const sound = useSfx()
+  const on3d = use3d()
   return (
-    <header className="sticky top-0 z-40 border-b border-line bg-bg/85 backdrop-blur-md">
-      <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 md:px-8">
-        <a href="#/" className="text-base font-semibold tracking-tight">
+    <header className="fixed inset-x-0 top-0 z-40 bg-gradient-to-b from-bg/85 to-transparent">
+      <div className="mx-auto flex h-16 max-w-7xl items-center justify-between gap-3 px-4 md:px-8">
+        <a href="#/" className="font-display text-lg font-bold uppercase italic tracking-wide">
           {site.name}
         </a>
-        <nav aria-label="Primary" className="flex items-center gap-1 sm:gap-3">
-          {links.map((l) => (
-            <a
-              key={l.href}
-              href={l.href}
-              className="rounded-full px-3 py-2 text-sm text-muted transition-colors hover:text-fg"
+        <nav aria-label="Primary" className="flex items-center gap-1 sm:gap-2">
+          <span className="hidden items-center sm:flex">
+            {links.map((l) => (
+              <a
+                key={l.href}
+                href={l.href}
+                className="hud px-3 py-2 text-[11px] text-muted transition-colors hover:text-fg"
+              >
+                {l.label}
+              </a>
+            ))}
+          </span>
+          {home && supports3d && (
+            <button
+              type="button"
+              aria-pressed={on3d}
+              onClick={() => set3d(!on3d)}
+              className={toggle}
             >
-              {l.label}
-            </a>
-          ))}
-          <ThemeToggle />
+              <Cube size={15} weight="bold" /> 3D {on3d ? 'on' : 'off'}
+            </button>
+          )}
+          <button
+            type="button"
+            aria-pressed={sound}
+            onClick={() => sfx.set(!sound)}
+            className={toggle}
+          >
+            {sound ? <SpeakerHigh size={15} weight="bold" /> : <SpeakerSlash size={15} weight="bold" />}
+            Sound {sound ? 'on' : 'off'}
+          </button>
         </nav>
       </div>
     </header>

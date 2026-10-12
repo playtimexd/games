@@ -9,12 +9,20 @@ import {
   Storefront,
 } from '@phosphor-icons/react'
 import type { Launch, Project } from '../data/projects'
+import { btnPrimary, btnSecondary } from '../lib/ui'
+import { sfx } from '../lib/sfx'
 import { Cover } from './Cover'
+import { Frame } from './Frame'
 
-const primary =
-  'inline-flex h-12 items-center gap-2 whitespace-nowrap rounded-full bg-accent px-6 text-sm font-semibold text-accent-ink transition hover:brightness-105 active:translate-y-px active:scale-[0.98]'
-const secondary =
-  'inline-flex h-12 items-center gap-2 whitespace-nowrap rounded-full border border-line px-5 text-sm font-semibold transition hover:bg-surface-2 active:translate-y-px active:scale-[0.98]'
+/** The project's art in a CRT-lined frame. */
+function Screen({ p, children }: { p: Project; children?: React.ReactNode }) {
+  return (
+    <Frame className="aspect-video" inner="crt relative">
+      <Cover project={p} priority />
+      {children}
+    </Frame>
+  )
+}
 
 /** Web game: poster first, iframe only after the visitor asks to play. */
 function WebPlayer({ p, url, embed }: { p: Project; url: string; embed: boolean }) {
@@ -24,11 +32,9 @@ function WebPlayer({ p, url, embed }: { p: Project; url: string; embed: boolean 
   if (!embed) {
     return (
       <div>
-        <div className="aspect-video overflow-hidden rounded-2xl ring-1 ring-line">
-          <Cover project={p} priority />
-        </div>
+        <Screen p={p} />
         <div className="mt-5 flex flex-wrap gap-3">
-          <a className={primary} href={url} target="_blank" rel="noreferrer">
+          <a className={btnPrimary} href={url} target="_blank" rel="noreferrer" onClick={() => sfx.confirm()}>
             <GameController size={18} weight="bold" /> Play now
           </a>
         </div>
@@ -38,36 +44,42 @@ function WebPlayer({ p, url, embed }: { p: Project; url: string; embed: boolean 
 
   return (
     <div>
-      <div
-        ref={box}
-        className="relative aspect-video overflow-hidden rounded-2xl bg-surface ring-1 ring-line"
-      >
-        {live ? (
-          <iframe
-            src={url}
-            title={`${p.title}, playable`}
-            className="size-full bg-black"
-            allow="fullscreen; gamepad; autoplay; clipboard-write"
-            sandbox="allow-scripts allow-same-origin allow-pointer-lock allow-popups allow-forms"
-          />
-        ) : (
-          <>
-            <Cover project={p} priority />
-            <div className="absolute inset-0 grid place-items-center bg-black/35">
-              <button type="button" onClick={() => setLive(true)} className={primary}>
-                <Play size={18} weight="fill" /> Play in browser
-              </button>
+      <div ref={box} className="frame aspect-video bg-black">
+        <div className="frame-in relative bg-black">
+          {live ? (
+            <iframe
+              src={url}
+              title={`${p.title}, playable`}
+              className="size-full bg-black"
+              allow="fullscreen; gamepad; autoplay; clipboard-write"
+              sandbox="allow-scripts allow-same-origin allow-pointer-lock allow-popups allow-forms"
+            />
+          ) : (
+            <div className="crt relative size-full">
+              <Cover project={p} priority />
+              <div className="absolute inset-0 grid place-items-center bg-black/45">
+                <button
+                  type="button"
+                  onClick={() => {
+                    sfx.confirm()
+                    setLive(true)
+                  }}
+                  className={btnPrimary}
+                >
+                  <Play size={18} weight="fill" /> Press start
+                </button>
+              </div>
             </div>
-          </>
-        )}
+          )}
+        </div>
       </div>
       <div className="mt-4 flex flex-wrap gap-3">
-        <a className={secondary} href={url} target="_blank" rel="noreferrer">
-          <ArrowSquareOut size={18} /> Open in new tab
+        <a className={btnSecondary} href={url} target="_blank" rel="noreferrer">
+          <ArrowSquareOut size={18} weight="bold" /> Open in new tab
         </a>
         {live && (
-          <button type="button" className={secondary} onClick={() => box.current?.requestFullscreen?.()}>
-            <ArrowsOut size={18} /> Fullscreen
+          <button type="button" className={btnSecondary} onClick={() => box.current?.requestFullscreen?.()}>
+            <ArrowsOut size={18} weight="bold" /> Fullscreen
           </button>
         )}
       </div>
@@ -76,20 +88,22 @@ function WebPlayer({ p, url, embed }: { p: Project; url: string; embed: boolean 
 }
 
 function SteamPanel({ p, appId }: { p: Project; appId: number }) {
-  const url = `https://store.steampowered.com/app/${appId}`
   return (
     <div>
-      <div className="aspect-video overflow-hidden rounded-2xl ring-1 ring-line">
-        <Cover project={p} priority />
-      </div>
+      <Screen p={p} />
       <iframe
         src={`https://store.steampowered.com/widget/${appId}/`}
         title={`${p.title} on Steam`}
         loading="lazy"
-        className="mt-5 h-[190px] w-full rounded-2xl border border-line bg-surface"
+        className="mt-5 h-[190px] w-full border border-line bg-surface"
       />
       <div className="mt-4">
-        <a className={primary} href={url} target="_blank" rel="noreferrer">
+        <a
+          className={btnPrimary}
+          href={`https://store.steampowered.com/app/${appId}`}
+          target="_blank"
+          rel="noreferrer"
+        >
           <Storefront size={18} weight="bold" /> View on Steam
         </a>
       </div>
@@ -127,48 +141,48 @@ function GithubPanel({ p, repo }: { p: Project; repo: string }) {
   const url = data?.html_url ?? `https://github.com/${repo}`
   return (
     <div>
-      <div className="aspect-video overflow-hidden rounded-2xl ring-1 ring-line">
-        <Cover project={p} priority />
-      </div>
-      <div className="mt-5 rounded-2xl border border-line bg-surface p-5">
-        <div className="flex items-center gap-3">
-          <GithubLogo size={22} />
-          <span className="font-mono text-sm">{repo}</span>
-        </div>
-        {state === 'loading' && (
-          <div className="mt-4 space-y-2" aria-hidden="true">
-            <div className="h-3 w-3/4 animate-pulse rounded bg-surface-2" />
-            <div className="h-3 w-1/3 animate-pulse rounded bg-surface-2" />
+      <Screen p={p} />
+      <Frame className="mt-5">
+        <div className="p-5">
+          <div className="flex items-center gap-3">
+            <GithubLogo size={22} />
+            <span className="font-mono text-sm">{repo}</span>
           </div>
-        )}
-        {state === 'ok' && data && (
-          <>
-            {data.description && (
-              <p className="mt-3 max-w-[60ch] text-sm text-muted">{data.description}</p>
-            )}
-            <ul className="mt-3 flex flex-wrap gap-x-5 gap-y-1 text-sm text-muted">
-              {data.language && <li>{data.language}</li>}
-              <li className="inline-flex items-center gap-1">
-                <Star size={14} /> {data.stargazers_count}
-              </li>
-              <li>
-                Updated{' '}
-                {new Date(data.pushed_at).toLocaleDateString(undefined, {
-                  month: 'short',
-                  year: 'numeric',
-                })}
-              </li>
-            </ul>
-          </>
-        )}
-        {state === 'error' && (
-          <p className="mt-3 text-sm text-muted">
-            Repo details could not be loaded right now. The link below still works.
-          </p>
-        )}
-      </div>
+          {state === 'loading' && (
+            <div className="mt-4 space-y-2" aria-hidden="true">
+              <div className="h-3 w-3/4 animate-pulse bg-surface-2" />
+              <div className="h-3 w-1/3 animate-pulse bg-surface-2" />
+            </div>
+          )}
+          {state === 'ok' && data && (
+            <>
+              {data.description && (
+                <p className="mt-3 max-w-[60ch] text-sm text-muted">{data.description}</p>
+              )}
+              <ul className="mt-3 flex flex-wrap gap-x-5 gap-y-1 text-sm text-muted">
+                {data.language && <li>{data.language}</li>}
+                <li className="inline-flex items-center gap-1">
+                  <Star size={14} /> {data.stargazers_count}
+                </li>
+                <li>
+                  Updated{' '}
+                  {new Date(data.pushed_at).toLocaleDateString(undefined, {
+                    month: 'short',
+                    year: 'numeric',
+                  })}
+                </li>
+              </ul>
+            </>
+          )}
+          {state === 'error' && (
+            <p className="mt-3 text-sm text-muted">
+              Repo details could not be loaded right now. The link below still works.
+            </p>
+          )}
+        </div>
+      </Frame>
       <div className="mt-4">
-        <a className={primary} href={url} target="_blank" rel="noreferrer">
+        <a className={btnPrimary} href={url} target="_blank" rel="noreferrer">
           <GithubLogo size={18} weight="bold" /> View source
         </a>
       </div>
@@ -179,13 +193,11 @@ function GithubPanel({ p, repo }: { p: Project; repo: string }) {
 function ComingSoon({ p }: { p: Project }) {
   return (
     <div>
-      <div className="aspect-video overflow-hidden rounded-2xl ring-1 ring-line">
-        <Cover project={p} priority />
-      </div>
+      <Screen p={p} />
       <div className="mt-5">
         <span
           aria-disabled="true"
-          className="inline-flex h-12 cursor-not-allowed items-center rounded-full border border-line px-6 text-sm font-semibold text-muted"
+          className="cut hud inline-flex h-12 cursor-not-allowed items-center bg-surface-2 px-7 text-sm text-muted"
         >
           Link coming soon
         </span>
@@ -207,11 +219,9 @@ export function LaunchPanel({ p }: { p: Project }) {
     case 'link':
       return (
         <div>
-          <div className="aspect-video overflow-hidden rounded-2xl ring-1 ring-line">
-            <Cover project={p} priority />
-          </div>
+          <Screen p={p} />
           <div className="mt-5">
-            <a className={primary} href={l.url} target="_blank" rel="noreferrer">
+            <a className={btnPrimary} href={l.url} target="_blank" rel="noreferrer">
               <ArrowSquareOut size={18} weight="bold" /> {l.label ?? 'Open project'}
             </a>
           </div>

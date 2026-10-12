@@ -4,9 +4,15 @@ export const site = {
   name: 'Your Name',
   role: 'Game producer',
   email: 'you@yourdomain.com',
-  headline: ['Shipped work', 'you can open.'],
+  headline: ['Walk up.', 'Press play.'],
   intro:
-    'Game producer. Each project opens as a web game, a Steam page or a source repo.',
+    'Game producer. Every cabinet is a project you can play, wishlist or read the source of.',
+  /** The last cabinet on the street. It is always there, so the street never looks finished. */
+  nextGame: {
+    title: 'Next game',
+    body: 'The next cabinet is still being built. Get in touch if you want to follow along.',
+    screen: ['NEXT GAME', 'IN PROGRESS'],
+  },
   about: {
     statement:
       'I take games from first prototype to something people can open, play and react to.',

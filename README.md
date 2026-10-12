@@ -1,11 +1,13 @@
 # Portfolio
 
-A two-layer portfolio for games, apps, tools and agents.
+A two-layer portfolio for games, apps, tools and agents, built as a night-time arcade street.
 
-- Layer 1: home (3D project coverflow, filterable work grid, about, contact)
-- Layer 2: one page per project (play, store or repo panel, notes, 3D screens)
+- Layer 1: home. Press start, then scroll down a neon street. Every project is an arcade
+  cabinet with its screenshot running on the CRT. Below the street: all games (filterable),
+  how I work, achievements, contact.
+- Layer 2: one page per project (play, store or repo panel, notes, 3D screens).
 
-Stack: Vite, React, TypeScript, Tailwind v4, Motion, Three.js.
+Stack: Vite, React, TypeScript, Tailwind v4, Motion, Three.js (with bloom).
 
 ```bash
 npm install
@@ -49,16 +51,24 @@ launch: { type: 'link', url: 'https://...', label: 'View on itch.io' }
 `kind` is `game`, `app`, `tool` or `agent`. The home filters are built from whichever
 kinds exist, so a new kind of project adds its own chip.
 
-## The 3D layer
+## The arcade
 
-`src/lib/flow.ts` is a framework-free Three.js coverflow. The hero shows every project;
-a project page with two or more `shots` shows them the same way.
+`src/lib/arcade.ts` is a framework-free Three.js scene. Scroll position drives a camera
+dolly down the street: stop 0 is the entrance, stop N is cabinet N.
 
-- drag, swipe, arrow keys or the arrow buttons to browse
-- hover ripples and RGB-splits the cover under the cursor, and the stage leans toward the pointer
-- click the front cover to open it
-- falls back to static images without WebGL, and turns motion off with `prefers-reduced-motion`
-- pauses rendering when off screen or when the tab is hidden
+- one cabinet per project, built from the data. A final "next game" cabinet is always
+  there, so the street never looks finished (copy lives in `site.nextGame`)
+- each CRT shows the project's cover, with attract-mode drift when idle and a ripple under
+  the cursor when it is the active cabinet
+- click the active cabinet to open it, click another to travel to it
+- arrow keys left and right, Enter to open, and a gamepad (d-pad, A) also work
+- `3D on/off` and `Sound on/off` sit in the nav. Sound is synthesized, no audio files
+- the boot screen's progress bar is real: it counts the covers, font and 3D chunk loading
+- it drops bloom and rain by itself on a slow machine, and falls back to a flat layout
+  without WebGL or with reduced motion
+- the site is dark only on purpose: every surface is a lit screen on a night street
+
+Project pages with two or more `shots` use `src/lib/flow.ts`, a smaller 3D coverflow.
 
 ## Deploy
 
