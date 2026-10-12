@@ -2,10 +2,9 @@ import { useEffect } from 'react'
 import { MotionConfig } from 'motion/react'
 import { parseRoute, useHash } from './lib/route'
 import { Nav } from './components/Nav'
-import { Den } from './components/Den'
+import { Cartridges } from './components/Cartridges'
 import { Work } from './components/Work'
 import { About } from './components/About'
-import { Achievements } from './components/Achievements'
 import { Contact } from './components/Contact'
 import { ProjectPage } from './components/ProjectPage'
 
@@ -50,15 +49,14 @@ export default function App() {
 
   return (
     <MotionConfig reducedMotion="user">
-      <Nav home={route.name === 'home'} />
+      <Nav />
       {route.name === 'project' ? (
         <ProjectPage slug={route.slug} />
       ) : (
         <main>
-          <Den />
+          <Cartridges />
           <Work />
           <About />
-          <Achievements />
         </main>
       )}
       <Contact />

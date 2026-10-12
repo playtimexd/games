@@ -4,13 +4,13 @@ export const site = {
   name: 'Your Name',
   role: 'Game producer',
   email: 'you@yourdomain.com',
-  headline: ['Pick a cartridge.', 'Or play for it.'],
+  headline: ['Pick a cartridge.'],
   intro:
-    'Game producer. Every cartridge is a project. Hit its target on the pinball table and it loads on the TV.',
-  /** The last, empty cartridge on the shelf. Always there, so the shelf never looks finished. */
+    'Game producer. Each cartridge opens a project.',
+  /** The last, blank cartridge. Always there, so the row never looks finished. */
   nextGame: {
     title: 'Next game',
-    body: 'The last cartridge is still empty. Get in touch if you want to follow along.',
+    body: 'The next cartridge is still blank. Get in touch if you want to follow along.',
     screen: ['NEXT GAME', 'IN PROGRESS'],
   },
   about: {

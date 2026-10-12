@@ -10,7 +10,6 @@ import {
 } from '@phosphor-icons/react'
 import type { Launch, Project } from '../data/projects'
 import { btnPrimary, btnSecondary } from '../lib/ui'
-import { sfx } from '../lib/sfx'
 import { Cover } from './Cover'
 import { Frame } from './Frame'
 
@@ -34,7 +33,7 @@ function WebPlayer({ p, url, embed }: { p: Project; url: string; embed: boolean 
       <div>
         <Screen p={p} />
         <div className="mt-5 flex flex-wrap gap-3">
-          <a className={btnPrimary} href={url} target="_blank" rel="noreferrer" onClick={() => sfx.confirm()}>
+          <a className={btnPrimary} href={url} target="_blank" rel="noreferrer">
             <GameController size={18} weight="bold" /> Play now
           </a>
         </div>
@@ -60,10 +59,7 @@ function WebPlayer({ p, url, embed }: { p: Project; url: string; embed: boolean 
               <div className="absolute inset-0 grid place-items-center bg-black/45">
                 <button
                   type="button"
-                  onClick={() => {
-                    sfx.confirm()
-                    setLive(true)
-                  }}
+                  onClick={() => setLive(true)}
                   className={btnPrimary}
                 >
                   <Play size={18} weight="fill" /> Press start

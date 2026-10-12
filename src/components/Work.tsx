@@ -3,7 +3,6 @@ import { AnimatePresence, motion } from 'motion/react'
 import { ArrowUpRight } from '@phosphor-icons/react'
 import { kindLabel, platformOf, projects, type Kind, type Project } from '../data/projects'
 import { projectHref } from '../lib/route'
-import { sfx } from '../lib/sfx'
 import { Cover } from './Cover'
 import { Frame } from './Frame'
 
@@ -20,8 +19,6 @@ function Card({ p, index }: { p: Project; index: number }) {
     >
       <a
         href={projectHref(p.slug)}
-        onClick={() => sfx.confirm()}
-        onMouseEnter={() => sfx.tick()}
         className="group block"
       >
         <Frame className="aspect-[16/10]" inner="crt relative">
@@ -77,10 +74,7 @@ export function Work() {
                   key={k}
                   type="button"
                   aria-pressed={on}
-                  onClick={() => {
-                    sfx.tick()
-                    setFilter(k)
-                  }}
+                  onClick={() => setFilter(k)}
                   className={`cut hud h-10 px-4 text-xs transition active:scale-[0.97] ${
                     on ? 'bg-accent text-accent-ink' : 'bg-surface-2 text-muted hover:text-fg'
                   }`}

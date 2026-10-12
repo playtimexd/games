@@ -5,8 +5,6 @@ import { kindLabel, platformOf, projects } from '../data/projects'
 import { site } from '../data/site'
 import { asset, projectHref } from '../lib/route'
 import { toFlowItem } from '../lib/items'
-import { sfx } from '../lib/sfx'
-import { useGamepad } from '../lib/gamepad'
 import { btnSecondary } from '../lib/ui'
 import { Cover } from './Cover'
 import { Frame } from './Frame'
@@ -75,9 +73,6 @@ export function ProjectPage({ slug }: { slug: string }) {
     }
   }, [p])
 
-  // B on a gamepad goes back to the street.
-  useGamepad({ b: () => (window.location.hash = '#work') }, true)
-
   if (!p) {
     return (
       <main className="mx-auto max-w-7xl px-4 pb-24 pt-36 md:px-8">
@@ -119,7 +114,6 @@ export function ProjectPage({ slug }: { slug: string }) {
       <div className="relative mx-auto max-w-7xl px-4 pb-24 pt-28 md:px-8">
         <a
           href="#work"
-          onClick={() => sfx.back()}
           className="hud inline-flex items-center gap-2 text-xs text-muted transition-colors hover:text-fg"
         >
           <ArrowLeft size={16} weight="bold" /> All games
@@ -188,7 +182,6 @@ export function ProjectPage({ slug }: { slug: string }) {
         {next.slug !== p.slug && (
           <a
             href={projectHref(next.slug)}
-            onClick={() => sfx.confirm()}
             className="group mt-24 block"
           >
             <Frame>

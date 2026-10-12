@@ -1,13 +1,12 @@
 # Portfolio
 
-A two-layer portfolio for games, apps, tools and agents, built as a 3D game room you can play.
+A two-layer portfolio for games, apps, tools and agents.
 
-- Layer 1: home. A small game room at night with a cartridge shelf, a console and CRT TV,
-  and a pinball machine you can actually play. Below it: all games (filterable), how I work,
-  achievements, contact.
+- Layer 1: home. One screen with a row of floating game cartridges. Below it: all games
+  (filterable), how I work, contact.
 - Layer 2: one page per project (play, store or repo panel, notes, 3D screens).
 
-Stack: Vite, React, TypeScript, Tailwind v4, Motion, Three.js (with bloom and shadows).
+Stack: Vite, React, TypeScript, Tailwind v4, Motion, Three.js.
 
 ```bash
 npm install
@@ -51,37 +50,24 @@ launch: { type: 'link', url: 'https://...', label: 'View on itch.io' }
 `kind` is `game`, `app`, `tool` or `agent`. The home filters are built from whichever
 kinds exist, so a new kind of project adds its own chip.
 
-## The game room
+## The cartridges
 
-`src/lib/den.ts` builds the room and runs the cameras. `src/lib/pinball.ts` is the physics,
-pure 2D with no rendering, so it runs headless. The HUD is `src/components/Den.tsx`.
+`src/lib/cartridges.ts` builds the scene, `src/components/Cartridges.tsx` is the page.
 
-Three stations, with cinematic cuts between them (keys 1, 2, 3 or the tabs):
-
-- **Room**: the whole room. Click the pinball machine to play or the shelf to browse.
-- **Browse**: one cartridge per project on the shelf. Click one to select it, click it again
-  (or press Enter) and it flies into the console, the TV switches on and the project opens.
-- **Play**: the pinball table. Each project is a target with its cover on it. Hit it and the
-  project is selected, with its title on the backbox display and its art on the TV. Roll the
-  ball into the hole to open the selected project.
-
-Controls on the table: hold Space to charge and release to launch, Z and / (or the arrow keys)
-for the flippers, and on a phone the Left, Launch and Right buttons. A gamepad works too.
-
-How it scales:
-
-- a new project adds a cartridge and, up to 10, a pinball target. The last cartridge is always
-  an empty one for the next game (copy in `site.nextGame`)
-- the shelf grows by rows. Past 10 projects the table keeps the first 10 and Browse has all of them
-- `Map 3D/2D` and `Sound` toggles sit in the nav. Sound is synthesized, there are no audio files
-- it drops shadows and bloom by itself on a slow machine, and falls back to a 2D layout
-  without WebGL or with reduced motion
-- the site is dark only on purpose: it is a game room at night
-
-In dev, `window.__DEN__` exposes `sim(seconds)` and `advance(seconds)` so physics and the open
-flow can be tested without animation frames. It is removed from production builds.
+- one cartridge per project, with its cover as the label, and one blank cartridge at the end
+  for the next game (copy in `site.nextGame`)
+- move the mouse: the row drifts if it is wider than the screen, the cartridge under the
+  cursor lifts and tilts toward it
+- click it: the camera moves into the label and the project opens
+- on touch: drag the row, tap once to select, tap again to open
+- the label under the row is a real link, and Left, Right and Enter work from the keyboard
+- no WebGL or reduced motion: the 3D row is replaced by a plain headline, and "All games"
+  below carries the list
 
 Project pages with two or more `shots` use `src/lib/flow.ts`, a smaller 3D coverflow.
+
+In dev, `window.__CARTS__.advance(seconds)` runs frames without animation frames, for tests in
+a hidden tab. It is removed from production builds.
 
 ## Deploy
 
