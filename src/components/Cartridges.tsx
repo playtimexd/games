@@ -5,6 +5,8 @@ import { site } from '../data/site'
 import { asset, projectHref } from '../lib/route'
 import { set3d, use3d } from '../lib/prefs'
 import type { Carts, CartItem } from '../lib/cartridges'
+import { Cover } from './Cover'
+import { Frame } from './Frame'
 
 /**
  * The home screen: one row of cartridges, nothing else. The label under the row follows
@@ -105,9 +107,24 @@ export function Cartridges() {
 
   if (!mode3d) {
     return (
-      <section id="shelf" className="mx-auto max-w-7xl px-4 pb-8 pt-36 md:px-8">
+      <section id="shelf" className="mx-auto max-w-5xl px-4 pb-16 pt-28 md:px-8">
         {heading}
-        <p className="mt-6 max-w-[40ch] text-lg leading-relaxed text-fg/80">{site.intro}</p>
+        <p className="mt-4 max-w-[40ch] text-lg leading-relaxed text-fg/80">{site.intro}</p>
+        <ul className="mt-10 grid gap-6 sm:grid-cols-2">
+          {projects.map((p) => (
+            <li key={p.slug}>
+              <a href={projectHref(p.slug)} className="group block">
+                <Frame className="aspect-[16/10]" inner="crt relative">
+                  <Cover project={p} />
+                </Frame>
+                <p className="mt-3 font-display text-2xl font-bold uppercase leading-none tracking-tight transition-colors group-hover:text-accent">
+                  {p.title}
+                </p>
+                <p className="mt-1 text-sm text-muted">{p.tagline}</p>
+              </a>
+            </li>
+          ))}
+        </ul>
       </section>
     )
   }

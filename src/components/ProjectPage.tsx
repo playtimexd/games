@@ -79,7 +79,7 @@ export function ProjectPage({ slug }: { slug: string }) {
         <h1 className="font-display text-5xl font-bold uppercase tracking-tight">
           Project not found
         </h1>
-        <a href="#work" className={`${btnSecondary} mt-8`}>
+        <a href="#/" className={`${btnSecondary} mt-8`}>
           <ArrowLeft size={18} weight="bold" /> All games
         </a>
       </main>
@@ -113,7 +113,7 @@ export function ProjectPage({ slug }: { slug: string }) {
 
       <div className="relative mx-auto max-w-7xl px-4 pb-24 pt-28 md:px-8">
         <a
-          href="#work"
+          href="#/"
           className="hud inline-flex items-center gap-2 text-xs text-muted transition-colors hover:text-fg"
         >
           <ArrowLeft size={16} weight="bold" /> All games

@@ -2,9 +2,11 @@
 
 A two-layer portfolio for games, apps, tools and agents.
 
-- Layer 1: home. One screen with a row of floating game cartridges. Below it: all games
-  (filterable), how I work, contact.
+- Layer 1: home. One screen, nothing but a row of floating game cartridges. A hidden sidebar
+  (the Menu button) holds the game list, a short about and contact.
 - Layer 2: one page per project (play, store or repo panel, notes, 3D screens).
+
+The sidebar is a drawer over the page, not another page, so the site stays two layers deep.
 
 Stack: Vite, React, TypeScript, Tailwind v4, Motion, Three.js.
 
@@ -61,8 +63,7 @@ kinds exist, so a new kind of project adds its own chip.
 - click it: the camera moves into the label and the project opens
 - on touch: drag the row, tap once to select, tap again to open
 - the label under the row is a real link, and Left, Right and Enter work from the keyboard
-- no WebGL or reduced motion: the 3D row is replaced by a plain headline, and "All games"
-  below carries the list
+- no WebGL or reduced motion: the 3D row is replaced by a plain headline and a grid of covers
 
 Project pages with two or more `shots` use `src/lib/flow.ts`, a smaller 3D coverflow.
 
