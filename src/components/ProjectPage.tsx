@@ -40,7 +40,7 @@ function Shots({ slug }: { slug: string }) {
     <section className="mt-24" aria-labelledby="screens">
       <h2
         id="screens"
-        className="font-display text-3xl font-bold uppercase italic tracking-tight md:text-4xl"
+        className="font-display text-3xl font-bold uppercase tracking-tight md:text-4xl"
       >
         Screens
       </h2>
@@ -81,7 +81,7 @@ export function ProjectPage({ slug }: { slug: string }) {
   if (!p) {
     return (
       <main className="mx-auto max-w-7xl px-4 pb-24 pt-36 md:px-8">
-        <h1 className="font-display text-5xl font-bold uppercase italic tracking-tight">
+        <h1 className="font-display text-5xl font-bold uppercase tracking-tight">
           Project not found
         </h1>
         <a href="#work" className={`${btnSecondary} mt-8`}>
@@ -127,7 +127,7 @@ export function ProjectPage({ slug }: { slug: string }) {
 
         <header className="mt-8 grid gap-10 lg:grid-cols-12">
           <div className="lg:col-span-8">
-            <h1 className="font-display text-5xl font-bold uppercase italic leading-[0.95] tracking-tight md:text-7xl">
+            <h1 className="font-display text-5xl font-bold uppercase leading-[0.95] tracking-tight md:text-7xl">
               {p.title}
             </h1>
             <p className="mt-5 max-w-[46ch] text-xl leading-relaxed text-fg/80">{p.tagline}</p>
@@ -156,7 +156,7 @@ export function ProjectPage({ slug }: { slug: string }) {
           </div>
           <div className="space-y-10 lg:col-span-4 lg:col-start-9">
             <div>
-              <h2 className="font-display text-xl font-bold uppercase italic tracking-tight">
+              <h2 className="font-display text-xl font-bold uppercase tracking-tight">
                 What I did
               </h2>
               <ul className="mt-4 space-y-3 text-sm leading-relaxed text-muted">
@@ -169,7 +169,7 @@ export function ProjectPage({ slug }: { slug: string }) {
               </ul>
             </div>
             <div>
-              <h2 className="font-display text-xl font-bold uppercase italic tracking-tight">
+              <h2 className="font-display text-xl font-bold uppercase tracking-tight">
                 Built with
               </h2>
               <ul className="mt-4 flex flex-wrap gap-2">
@@ -195,7 +195,7 @@ export function ProjectPage({ slug }: { slug: string }) {
               <div className="flex items-center justify-between gap-6 p-6 md:p-8">
                 <span>
                   <span className="hud block text-[11px] text-muted">Next game</span>
-                  <span className="mt-2 block font-display text-3xl font-bold uppercase italic tracking-tight md:text-5xl">
+                  <span className="mt-2 block font-display text-3xl font-bold uppercase tracking-tight md:text-5xl">
                     {next.title}
                   </span>
                 </span>

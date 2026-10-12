@@ -32,7 +32,7 @@ function Card({ p, index }: { p: Project; index: number }) {
         </Frame>
         <div className="mt-4 flex items-start justify-between gap-4">
           <div className="min-w-0">
-            <h3 className="font-display text-2xl font-bold uppercase italic leading-none tracking-tight">
+            <h3 className="font-display text-2xl font-bold uppercase leading-none tracking-tight">
               {p.title}
             </h3>
             <p className="mt-2 text-sm leading-relaxed text-muted">{p.tagline}</p>
@@ -65,7 +65,7 @@ export function Work() {
   return (
     <section id="work" className="mx-auto max-w-7xl scroll-mt-4 px-4 py-24 md:px-8">
       <div className="flex flex-wrap items-end justify-between gap-6">
-        <h2 className="font-display text-5xl font-bold uppercase italic leading-none tracking-tight md:text-7xl">
+        <h2 className="font-display text-5xl font-bold uppercase leading-none tracking-tight md:text-7xl">
           All games
         </h2>
         {kinds.length > 1 && (

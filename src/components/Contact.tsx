@@ -7,7 +7,7 @@ export function Contact() {
       <div className="mx-auto max-w-7xl px-4 pb-10 pt-24 md:px-8">
         <a
           href={`mailto:${site.email}`}
-          className="group inline-flex flex-wrap items-center gap-x-4 font-display text-3xl font-bold uppercase italic tracking-tight sm:text-5xl md:text-7xl"
+          className="group inline-flex flex-wrap items-center gap-x-4 font-display text-3xl font-bold uppercase tracking-tight sm:text-5xl md:text-7xl"
         >
           <span className="break-all decoration-line decoration-4 underline-offset-[0.14em] transition-colors group-hover:text-accent group-hover:underline">
             {site.email}

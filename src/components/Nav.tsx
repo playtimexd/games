@@ -1,4 +1,4 @@
-import { SpeakerHigh, SpeakerSlash, Cube } from '@phosphor-icons/react'
+import { SpeakerHigh, SpeakerSlash, MapTrifold } from '@phosphor-icons/react'
 import { site } from '../data/site'
 import { sfx, useSfx } from '../lib/sfx'
 import { set3d, supports3d, use3d } from '../lib/prefs'
@@ -18,7 +18,7 @@ export function Nav({ home }: { home: boolean }) {
   return (
     <header className="fixed inset-x-0 top-0 z-40 bg-gradient-to-b from-bg/85 to-transparent">
       <div className="mx-auto flex h-16 max-w-7xl items-center justify-between gap-3 px-4 md:px-8">
-        <a href="#/" className="font-display text-lg font-bold uppercase italic tracking-wide">
+        <a href="#/" className="font-display text-lg font-bold uppercase tracking-wide">
           {site.name}
         </a>
         <nav aria-label="Primary" className="flex items-center gap-1 sm:gap-2">
@@ -40,7 +40,7 @@ export function Nav({ home }: { home: boolean }) {
               onClick={() => set3d(!on3d)}
               className={toggle}
             >
-              <Cube size={15} weight="bold" /> 3D {on3d ? 'on' : 'off'}
+              <MapTrifold size={15} weight="bold" /> Map {on3d ? '3D' : '2D'}
             </button>
           )}
           <button

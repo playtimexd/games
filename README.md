@@ -1,9 +1,9 @@
 # Portfolio
 
-A two-layer portfolio for games, apps, tools and agents, built as a night-time arcade street.
+A two-layer portfolio for games, apps, tools and agents, built as a strategy-game command screen.
 
-- Layer 1: home. Press start, then scroll down a neon street. Every project is an arcade
-  cabinet with its screenshot running on the CRT. Below the street: all games (filterable),
+- Layer 1: home. A 3D campaign map: one base per project standing in a hex canyon, on a
+  supply line that runs into unexplored fog. Below the map: all games (filterable),
   how I work, achievements, contact.
 - Layer 2: one page per project (play, store or repo panel, notes, 3D screens).
 
@@ -51,22 +51,26 @@ launch: { type: 'link', url: 'https://...', label: 'View on itch.io' }
 `kind` is `game`, `app`, `tool` or `agent`. The home filters are built from whichever
 kinds exist, so a new kind of project adds its own chip.
 
-## The arcade
+## The campaign map
 
-`src/lib/arcade.ts` is a framework-free Three.js scene. Scroll position drives a camera
-dolly down the street: stop 0 is the entrance, stop N is cabinet N.
+`src/lib/world.ts` is a framework-free Three.js scene and `src/lib/layout.ts` decides where
+each base stands (x is time, z is the lane for its kind). The HUD is plain React in
+`src/components/Command.tsx`.
 
-- one cabinet per project, built from the data. A final "next game" cabinet is always
-  there, so the street never looks finished (copy lives in `site.nextGame`)
-- each CRT shows the project's cover, with attract-mode drift when idle and a ripple under
-  the cursor when it is the active cabinet
-- click the active cabinet to open it, click another to travel to it
-- arrow keys left and right, Enter to open, and a gamepad (d-pad, A) also work
-- `3D on/off` and `Sound on/off` sit in the nav. Sound is synthesized, no audio files
-- the boot screen's progress bar is real: it counts the covers, font and 3D chunk loading
-- it drops bloom and rain by itself on a slow machine, and falls back to a flat layout
+- one base per project, built from the data. The tower shape says what it is: hex tower for
+  a game, block for an app, prism for a tool, core for an agent
+- a final "next game" base always sits at the edge of unexplored territory, so the map never
+  looks finished (copy lives in `site.nextGame`)
+- low cinematic camera with pointer parallax and a field-of-view punch when you select
+- drag to orbit, right-drag to pan, ctrl + wheel or the +/- buttons to zoom. The plain wheel
+  is left alone so the page still scrolls
+- click a base to select it, click it again (or press Q or Enter) to open the project
+- HUD: radar minimap, roster with number hotkeys, selection panel, command card
+  (Q open, W launch, E overview, A previous, S next), and gamepad (d-pad, A, B)
+- `Map 3D/2D` and `Sound` toggles in the nav. Sound is synthesized, no audio files
+- it drops bloom and dust by itself on a slow machine, and falls back to a 2D layout
   without WebGL or with reduced motion
-- the site is dark only on purpose: every surface is a lit screen on a night street
+- the site is dark only on purpose: the whole thing is a tactical screen
 
 Project pages with two or more `shots` use `src/lib/flow.ts`, a smaller 3D coverflow.
 

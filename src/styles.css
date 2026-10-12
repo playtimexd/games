@@ -1,15 +1,14 @@
 @import "tailwindcss";
 @import "@fontsource-variable/geist";
 @import "@fontsource-variable/geist-mono";
-@import "@fontsource/chakra-petch/500.css";
-@import "@fontsource/chakra-petch/600.css";
-@import "@fontsource/chakra-petch/700.css";
-@import "@fontsource/chakra-petch/700-italic.css";
+@import "@fontsource/barlow-condensed/500.css";
+@import "@fontsource/barlow-condensed/600.css";
+@import "@fontsource/barlow-condensed/700.css";
 
 @theme inline {
   --font-sans: "Geist Variable", ui-sans-serif, system-ui, sans-serif;
   --font-mono: "Geist Mono Variable", ui-monospace, monospace;
-  --font-display: "Chakra Petch", "Geist Variable", ui-sans-serif, system-ui, sans-serif;
+  --font-display: "Barlow Condensed", "Geist Variable", ui-sans-serif, system-ui, sans-serif;
   --color-bg: var(--bg);
   --color-surface: var(--surface);
   --color-surface-2: var(--surface-2);
@@ -21,20 +20,19 @@
 }
 
 /*
- * Dark only, on purpose: the site is a night-time arcade street and every
- * surface is a lit screen. One UI accent (amber). The cyan and magenta you see
- * belong to the 3D city, not to the interface.
+ * Dark only, on purpose: the whole site is a tactical screen. One accent (ice cyan)
+ * on ink, and the 3D map uses the same single hue.
  */
 :root {
   color-scheme: dark;
-  --bg: #05060b;
-  --surface: #0b0e17;
-  --surface-2: #151a27;
-  --line: rgb(255 255 255 / 0.13);
-  --fg: #eef1f8;
-  --muted: #9aa4b8;
-  --accent: #ffab2e;
-  --accent-ink: #0b0b0e;
+  --bg: #05080b;
+  --surface: #0a1117;
+  --surface-2: #111c25;
+  --line: rgb(140 205 230 / 0.17);
+  --fg: #e8f3f8;
+  --muted: #8fa6b3;
+  --accent: #4fd8ff;
+  --accent-ink: #04141a;
 }
 
 html {
@@ -57,33 +55,33 @@ body {
 }
 
 /*
- * Shape system: every surface has two cut corners (top-left, bottom-right).
+ * Shape system: every surface has two cut corners (top-right, bottom-left).
  * .cut clips one element; .frame is a 1px bordered cut panel with .frame-in inside.
  */
 .cut {
-  --cut: 12px;
+  --cut: 9px;
   clip-path: polygon(
-    var(--cut) 0,
-    100% 0,
-    100% calc(100% - var(--cut)),
-    calc(100% - var(--cut)) 100%,
-    0 100%,
-    0 var(--cut)
+    0 0,
+    calc(100% - var(--cut)) 0,
+    100% var(--cut),
+    100% 100%,
+    var(--cut) 100%,
+    0 calc(100% - var(--cut))
   );
 }
 .frame {
-  --cut: 14px;
+  --cut: 12px;
   --frame: var(--line);
   background: var(--frame);
   padding: 1px;
   transition: background-color 0.25s;
   clip-path: polygon(
-    var(--cut) 0,
-    100% 0,
-    100% calc(100% - var(--cut)),
-    calc(100% - var(--cut)) 100%,
-    0 100%,
-    0 var(--cut)
+    0 0,
+    calc(100% - var(--cut)) 0,
+    100% var(--cut),
+    100% 100%,
+    var(--cut) 100%,
+    0 calc(100% - var(--cut))
   );
 }
 .frame-in {
@@ -92,12 +90,12 @@ body {
   height: 100%;
   overflow: hidden;
   clip-path: polygon(
-    var(--c) 0,
-    100% 0,
-    100% calc(100% - var(--c)),
-    calc(100% - var(--c)) 100%,
-    0 100%,
-    0 var(--c)
+    0 0,
+    calc(100% - var(--c)) 0,
+    100% var(--c),
+    100% 100%,
+    var(--c) 100%,
+    0 calc(100% - var(--c))
   );
 }
 .group:hover > .frame,
@@ -105,17 +103,13 @@ body {
 .frame[data-active="true"] {
   --frame: var(--accent);
 }
-.glass .frame-in {
-  background: rgb(8 10 18 / 0.72);
-  backdrop-filter: blur(14px);
-}
 
 /* HUD micro-labels: display face, uppercase, widened. Chips and meta only. */
 .hud {
   font-family: var(--font-display);
   font-weight: 600;
   text-transform: uppercase;
-  letter-spacing: 0.1em;
+  letter-spacing: 0.14em;
 }
 
 /* Fades the WebGL gallery into the page so planes never end on a hard edge. */

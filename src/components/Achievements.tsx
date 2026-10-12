@@ -76,7 +76,7 @@ export function Achievements() {
   return (
     <section id="achievements" className="mx-auto max-w-7xl px-4 py-24 md:px-8">
       <div className="flex flex-wrap items-end justify-between gap-4">
-        <h2 className="font-display text-4xl font-bold uppercase italic leading-none tracking-tight md:text-6xl">
+        <h2 className="font-display text-4xl font-bold uppercase leading-none tracking-tight md:text-6xl">
           Achievements
         </h2>
         <p className="hud text-sm text-muted">
@@ -99,7 +99,7 @@ export function Achievements() {
                     <Icon size={26} weight="bold" />
                   </span>
                   <div className="min-w-0">
-                    <h3 className="font-display text-lg font-bold uppercase italic tracking-tight">
+                    <h3 className="font-display text-lg font-bold uppercase tracking-tight">
                       {a.title}
                     </h3>
                     <p className="mt-1 text-sm text-muted">{a.body}</p>

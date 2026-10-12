@@ -4,13 +4,13 @@ export const site = {
   name: 'Your Name',
   role: 'Game producer',
   email: 'you@yourdomain.com',
-  headline: ['Walk up.', 'Press play.'],
+  headline: ['Pick a base.', 'Open the work.'],
   intro:
-    'Game producer. Every cabinet is a project you can play, wishlist or read the source of.',
-  /** The last cabinet on the street. It is always there, so the street never looks finished. */
+    'Game producer. Each base on this map is a project you can play, wishlist or read the source of.',
+  /** The last base on the map, in unexplored territory. Always there, so the map never looks finished. */
   nextGame: {
     title: 'Next game',
-    body: 'The next cabinet is still being built. Get in touch if you want to follow along.',
+    body: 'The next base is still being built. Get in touch if you want to follow along.',
     screen: ['NEXT GAME', 'IN PROGRESS'],
   },
   about: {
