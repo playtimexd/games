@@ -1,9 +1,9 @@
 // Everything personal lives here. Edit this file, not the components.
 
 export const site = {
-  name: 'Your Name',
+  name: 'Andrew Zhang',
   role: 'Game producer',
-  email: 'you@yourdomain.com',
+  email: 'andrewzhang513@gmail.com',
   headline: ['Pick a cartridge.'],
   intro:
     'Game producer. Each cartridge opens a project.',
