@@ -727,7 +727,7 @@ export function createDen(o: DenOptions): Den | null {
   const STATIONS: Record<Station | 'insert', { p: THREE.Vector3; l: THREE.Vector3; fov: number }> = {
     room: { p: new THREE.Vector3(2.7, 2.0, 4.0), l: new THREE.Vector3(-0.6, 1.1, -0.9), fov: 48 },
     tv: { p: new THREE.Vector3(1.5, 2.0, 3.0), l: new THREE.Vector3(0.75, 1.35, -2.8), fov: 42 },
-    play: { p: new THREE.Vector3(-1.7, 3.05, 2.55), l: new THREE.Vector3(-1.7, 0.9, -0.05), fov: 40 },
+    play: { p: new THREE.Vector3(-1.7, 4.2, 3.2), l: new THREE.Vector3(-1.7, 0.75, 0.0), fov: 42 },
     insert: { p: new THREE.Vector3(0.0, 1.2, -1.3), l: new THREE.Vector3(-0.35, 1.1, -2.7), fov: 28 },
   }
   let target: keyof typeof STATIONS = 'room'

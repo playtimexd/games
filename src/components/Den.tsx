@@ -73,9 +73,13 @@ export function Den() {
   const launch = current ? launchOf(current) : null
 
   const go = (s: Station) => {
+    // a focused tab button would otherwise swallow Space as a click
+    if (document.activeElement instanceof HTMLElement) document.activeElement.blur()
+    releaseAllRef.current()
     setStation(s)
     den.current?.setStation(s)
   }
+  const releaseAllRef = useRef(() => {})
   const pickIndex = (i: number) => {
     const n = ((i % N) + N) % N
     setSel(n)
@@ -134,36 +138,61 @@ export function Den() {
   }, [mode3d, items])
 
   // keyboard
+  const flipKeys: Record<string, 'left' | 'right'> = {
+    z: 'left',
+    arrowleft: 'left',
+    '/': 'right',
+    m: 'right',
+    arrowright: 'right',
+  }
+  const releaseAll = () => {
+    den.current?.flipper('left', false)
+    den.current?.flipper('right', false)
+    den.current?.plunger(false)
+  }
+  releaseAllRef.current = releaseAll
+
+  // Releases are always listened for, even if the page has scrolled the table out of view,
+  // otherwise a held plunger or flipper could get stuck.
+  useEffect(() => {
+    if (!mode3d) return
+    const up = (e: KeyboardEvent) => {
+      const k = e.key.toLowerCase()
+      if (flipKeys[k]) den.current?.flipper(flipKeys[k], false)
+      else if (k === ' ') den.current?.plunger(false)
+    }
+    window.addEventListener('keyup', up)
+    window.addEventListener('blur', releaseAll)
+    return () => {
+      window.removeEventListener('keyup', up)
+      window.removeEventListener('blur', releaseAll)
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [mode3d])
+
   useEffect(() => {
     if (!mode3d || !inView) return
     const typing = () => {
       const el = document.activeElement
       return !!el && /^(INPUT|TEXTAREA|SELECT)$/.test(el.tagName)
     }
-    const flipKeys: Record<string, 'left' | 'right'> = {
-      z: 'left',
-      arrowleft: 'left',
-      '/': 'right',
-      m: 'right',
-      arrowright: 'right',
-    }
     const down = (e: KeyboardEvent) => {
       if (e.ctrlKey || e.metaKey || e.altKey || typing()) return
       const k = e.key.toLowerCase()
       const st = stationRef.current
+      if (st === 'play' && (k === ' ' || flipKeys[k])) {
+        // always swallow these, including key repeats, so holding Space never scrolls the page
+        e.preventDefault()
+        if (e.repeat) return
+        if (k === ' ') den.current?.plunger(true)
+        else den.current?.flipper(flipKeys[k], true)
+        return
+      }
       if (k === '1') go('room')
       else if (k === '2') go('tv')
       else if (k === '3') go('play')
       else if (k === 'escape') go('room')
-      else if (st === 'play') {
-        if (flipKeys[k]) {
-          e.preventDefault()
-          den.current?.flipper(flipKeys[k], true)
-        } else if (k === ' ' && !e.repeat) {
-          e.preventDefault()
-          den.current?.plunger(true)
-        }
-      } else if (st === 'tv') {
+      else if (st === 'tv') {
         if (k === 'arrowleft') {
           e.preventDefault()
           pickIndex(selRef.current < 0 ? N - 1 : selRef.current - 1)
@@ -173,18 +202,8 @@ export function Den() {
         } else if (k === 'enter') open()
       }
     }
-    const up = (e: KeyboardEvent) => {
-      const k = e.key.toLowerCase()
-      if (stationRef.current !== 'play') return
-      if (flipKeys[k]) den.current?.flipper(flipKeys[k], false)
-      else if (k === ' ') den.current?.plunger(false)
-    }
     window.addEventListener('keydown', down)
-    window.addEventListener('keyup', up)
-    return () => {
-      window.removeEventListener('keydown', down)
-      window.removeEventListener('keyup', up)
-    }
+    return () => window.removeEventListener('keydown', down)
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [mode3d, inView])
 
@@ -255,7 +274,7 @@ export function Den() {
             {String(score).padStart(6, '0')}
           </p>
           <p className="hud mt-3 hidden text-[11px] text-muted md:block">
-            Hold Space to launch, Z and / to flip
+            Hold Space to charge and release to launch. Z and / flip.
           </p>
           {projects.length > MAX_TARGETS && (
             <p className="hud mt-1 hidden text-[11px] text-muted md:block">
@@ -322,7 +341,7 @@ export function Den() {
       {/* bottom controls */}
       <div className="pointer-events-none absolute inset-x-0 bottom-4 flex flex-col items-center gap-3 px-4">
         {station === 'play' && (
-          <div className="pointer-events-auto flex w-full max-w-md items-center justify-between gap-3 md:hidden">
+          <div className="pointer-events-auto flex w-full max-w-md items-center justify-between gap-3">
             <button type="button" className={`${chip} bg-surface-2 text-fg`} {...hold('left')}>
               Left
             </button>
@@ -342,6 +361,11 @@ export function Den() {
               Right
             </button>
           </div>
+        )}
+        {station === 'room' && (
+          <p className="hud pointer-events-none text-[11px] text-muted">
+            Click the pinball machine to play, the shelf to browse
+          </p>
         )}
         {station === 'tv' && (
           <div className="pointer-events-auto flex items-center gap-2">
